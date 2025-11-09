@@ -1,0 +1,8 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","3869","Go to the catalog -> Electronics -> Televisions","","Sun Nov 09 20:39:49 UTC 2025","passed","Sun Nov 09 20:39:53 UTC 2025","","Go to the Televisions section","Go to the catalog -> Electronics -> Televisions",""
+"","3899","Go to the catalog -> Electronics -> Tablets","","Sun Nov 09 20:39:45 UTC 2025","passed","Sun Nov 09 20:39:49 UTC 2025","","Go to the Tablets section","Go to the catalog -> Electronics -> Tablets",""
+"","8314","Add 10 entries, delete top entry, scroll down, verify that 9 notes remain","","Sun Nov 09 20:39:34 UTC 2025","broken","Sun Nov 09 20:39:42 UTC 2025","","Adding and deleting record","Add 10 entries, delete top entry, scroll down, verify that 9 notes remain",""
+"","3133","Find the arrow at the bottom of the page to scroll up","","Sun Nov 09 20:39:42 UTC 2025","passed","Sun Nov 09 20:39:45 UTC 2025","","Scroll to top of page","Find the arrow at the bottom of the page to scroll up",""
+"","11812","Go to the catalog -> Electronics -> Phones","","Sun Nov 09 20:39:18 UTC 2025","passed","Sun Nov 09 20:39:30 UTC 2025","","Go to the Phones section","Go to the catalog -> Electronics -> Phones",""
+"","3869","Go to the catalog -> Electronics -> Watches","","Sun Nov 09 20:39:53 UTC 2025","passed","Sun Nov 09 20:39:57 UTC 2025","","Go to the Watches section","Go to the catalog -> Electronics -> Watches",""
+"","3973","Go to the catalog -> Electronics -> PhotoAndVideos","","Sun Nov 09 20:39:30 UTC 2025","passed","Sun Nov 09 20:39:34 UTC 2025","","Go to the PhotoAndVideos section","Go to the catalog -> Electronics -> PhotoAndVideos",""
