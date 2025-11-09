@@ -54,8 +54,6 @@ public class PlannerPage {
         for (int i = 1; i <= count; i++) {
             WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
 
-            input.click();
-            input.clear();
             input.sendKeys("Test recording " + i);
             safeClick(addButton);
 
