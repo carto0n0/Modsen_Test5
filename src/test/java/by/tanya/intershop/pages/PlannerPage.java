@@ -1,9 +1,6 @@
 package by.tanya.intershop.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -28,6 +25,19 @@ public class PlannerPage {
         this.js = (JavascriptExecutor) driver;
     }
 
+    private PlannerPage safeClick(By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        try {
+            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+            element.click();
+        } catch (ElementClickInterceptedException e) {
+            WebElement element = driver.findElement(locator);
+            js.executeScript("arguments[0].click();", element);
+        }
+        return this;
+    }
+
 
     public PlannerPage rememberOriginalEntries() {
         List<WebElement> entriesList = driver.findElements(entries);
@@ -43,7 +53,8 @@ public class PlannerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         for (int i = 1; i <= count; i++) {
             driver.findElement(entryInput).sendKeys("Test recording" + i);
-            driver.findElement(addButton).click();
+            driver.findElement(addButton);
+            safeClick(addButton);
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
         }
         return this;
@@ -59,7 +70,7 @@ public class PlannerPage {
 
         WebElement bucketButton = wait.until(ExpectedConditions.presenceOfElementLocated(bucket));
 
-        js.executeScript("arguments[0].click();", bucketButton);
+        safeClick((By) bucketButton);
 
         return this;
     }
