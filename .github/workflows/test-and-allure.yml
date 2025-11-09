@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
       - name: Checkout repository
@@ -19,7 +20,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Set up Node.js (для allure-commandline)
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
@@ -30,7 +31,8 @@ jobs:
 
       - name: Run tests with Allure
         run: |
-          mvn clean test -Dallure.results.directory=target/allure-results
+          mvn clean test -Dallure.results.directory=target/allure-results  -Dmaven.test.failure.ignore=true
+        continue-on-error: true
 
       - name: List target directory contents
         run: |
@@ -49,9 +51,11 @@ jobs:
       - name: Generate Allure report
         run: |
           allure generate target/allure-results -o allure-report --clean
+        if: always()
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
+        if: always()

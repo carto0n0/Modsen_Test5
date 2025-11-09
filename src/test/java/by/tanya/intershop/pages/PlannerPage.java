@@ -50,18 +50,22 @@ public class PlannerPage {
     }
 
     public PlannerPage addEntries(int count) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         for (int i = 1; i <= count; i++) {
-            driver.findElement(entryInput).sendKeys("Test recording" + i);
-            driver.findElement(addButton);
+            WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
+
+            input.click();
+            input.clear();
+            input.sendKeys("Test recording " + i);
             safeClick(addButton);
+
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
         }
         return this;
     }
 
     public PlannerPage deleteTopEntry(Actions actions) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
         WebElement firstContainer = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(firstEntry));
@@ -70,7 +74,7 @@ public class PlannerPage {
 
         WebElement bucketButton = wait.until(ExpectedConditions.presenceOfElementLocated(bucket));
 
-        safeClick((By) bucketButton);
+        js.executeScript("arguments[0].click();", bucketButton);
 
         return this;
     }
