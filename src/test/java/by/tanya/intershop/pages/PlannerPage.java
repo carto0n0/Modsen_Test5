@@ -25,21 +25,8 @@ public class PlannerPage {
         this.js = (JavascriptExecutor) driver;
     }
 
-    private PlannerPage safeClick(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        try {
-            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
-            element.click();
-        } catch (ElementClickInterceptedException e) {
-            WebElement element = driver.findElement(locator);
-            js.executeScript("arguments[0].click();", element);
-        }
-        return this;
-    }
-
-
     public PlannerPage rememberOriginalEntries() {
+
         List<WebElement> entriesList = driver.findElements(entries);
         originalEntriesTexts = entriesList.stream()
                 .map(WebElement::getText)
@@ -53,9 +40,10 @@ public class PlannerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         for (int i = 1; i <= count; i++) {
             WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
-
             input.sendKeys("Test recording " + i);
-            safeClick(addButton);
+
+            WebElement button = wait.until(ExpectedConditions.elementToBeClickable(addButton));
+            button.click();
 
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
         }
