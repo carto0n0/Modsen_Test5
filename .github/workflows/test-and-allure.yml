@@ -28,9 +28,23 @@ jobs:
         run: |
           npm install -g allure-commandline --save-dev
 
-      - name: Run tests
+      - name: Run tests with Allure
         run: |
-          mvn clean test
+          mvn clean test -Dallure.results.directory=target/allure-results
+
+      - name: List target directory contents
+        run: |
+          ls -la target/
+
+      - name: Check if allure-results exists
+        run: |
+          if [ -d "target/allure-results" ]; then
+            echo "Allure results directory exists"
+            ls -la target/allure-results/
+          else
+            echo "Allure results directory NOT found"
+            find . -name "allure-results" -type d
+          fi
 
       - name: Generate Allure report
         run: |

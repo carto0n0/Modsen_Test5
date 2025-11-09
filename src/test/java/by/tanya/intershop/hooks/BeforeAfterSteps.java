@@ -24,6 +24,9 @@ public class BeforeAfterSteps {
 
     @Before
     public void setUp() throws Exception {
+        System.setProperty("allure.results.directory", "target/allure-results");
+        logger.info("Allure results directory: {}", System.getProperty("allure.results.directory"));
+
         driver = DriverFactory.createDriver();
         logger.info("Driver has been created: {}", driver);
     }
