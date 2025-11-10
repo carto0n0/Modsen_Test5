@@ -21,7 +21,7 @@ public class OpenStep {
     }
 
     @Given("planner site is open")
-    public void openPlanner(){
+    public void openPlanner() {
         String url = ConfigReader.get("plannerUrl");
         driver.get(url);
         driver.manage().window().maximize();

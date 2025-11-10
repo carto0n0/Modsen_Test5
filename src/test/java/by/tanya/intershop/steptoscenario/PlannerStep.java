@@ -17,7 +17,7 @@ public class PlannerStep {
     @When("Add 10 new entries")
     public void addEntriesToPlanner() {
         plannerPage.rememberOriginalEntries()
-                        .addEntries(10);
+                .addEntries(10);
     }
 
     @And("delete top entry")

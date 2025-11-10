@@ -10,8 +10,8 @@ import java.nio.file.Files;
 public class DriverFactory {
 
     public static WebDriver createDriver() throws IOException {
-        String isCI = System.getenv("CI");
         ChromeOptions options = new ChromeOptions();
+        String isCI = System.getenv("CI");
 
         if ("true".equals(isCI)) {
             String userDataDir = Files.createTempDirectory("chrome-profile-").toString();

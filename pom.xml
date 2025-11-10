@@ -154,7 +154,6 @@
                     <failIfNoTests>false</failIfNoTests>
                     <argLine>
                         -javaagent:${user.home}/.m2/repository/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
-                        -Dallure.results.directory=${project.build.directory}/allure-results
                     </argLine>
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>

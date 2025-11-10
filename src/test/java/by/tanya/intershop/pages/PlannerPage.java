@@ -40,6 +40,9 @@ public class PlannerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         for (int i = 1; i <= count; i++) {
             WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", input);
+
+            input.click();
             input.sendKeys("Test recording " + i);
 
             WebElement button = wait.until(ExpectedConditions.elementToBeClickable(addButton));
