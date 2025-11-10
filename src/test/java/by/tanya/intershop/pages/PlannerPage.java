@@ -57,10 +57,12 @@ public class PlannerPage {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", input);
             input.sendKeys("Test recording " + i);
 
-            WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(addButton));
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+            driver.findElement(addButton).click();
 
-            wait.until(ExpectedConditions.elementToBeClickable(button)).click();
+//            WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(addButton));
+//            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+//
+//            wait.until(ExpectedConditions.elementToBeClickable(button)).click();
 
 //          WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
 //
