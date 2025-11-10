@@ -44,8 +44,9 @@ public class PlannerPage {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", input);
             input.sendKeys("Test recording " + i);
 
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", addButton);
             WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(addButton));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+
             wait.until(ExpectedConditions.elementToBeClickable(button)).click();
 
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
