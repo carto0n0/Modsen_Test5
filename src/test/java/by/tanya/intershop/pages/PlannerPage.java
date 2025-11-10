@@ -39,34 +39,16 @@ public class PlannerPage {
     public PlannerPage addEntries(int count) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         for (int i = 1; i <= count; i++) {
-            try {
-                WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
-                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", input);
+            WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", input);
 
-                Thread.sleep(200);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", input);
+            input.sendKeys("Test recording " + i);
 
-                try {
-                    input.click();
-                } catch (ElementClickInterceptedException e) {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", input);
-                }input.clear();
-                input.sendKeys("Test recording " + i);
+            WebElement button = wait.until(ExpectedConditions.elementToBeClickable(addButton));
+            button.click();
 
-                WebElement button = wait.until(ExpectedConditions.elementToBeClickable(addButton));
-                try {
-                    button.click();
-                } catch (ElementClickInterceptedException e) {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", button);
-                }
-
-                wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
-
-                Thread.sleep(300);
-
-            } catch (Exception e) {
-                System.err.println("Error adding entry " + i + ": " + e.getMessage());
-                throw new RuntimeException("Failed to add entry " + i, e);
-            }
+            wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
         }
         return this;
     }
