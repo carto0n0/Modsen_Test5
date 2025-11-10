@@ -8,6 +8,8 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class PlannerStep {
 
     private WebDriver driver = BeforeAfterSteps.getDriver();
@@ -32,6 +34,7 @@ public class PlannerStep {
 
     @Then("check the original records")
     public void AreEntries() {
-        plannerPage.areOriginalEntriesPresent();
+        boolean areEntry = plannerPage.areOriginalEntriesPresent();
+        assertTrue(areEntry, "original records are changed");
     }
 }

@@ -52,9 +52,12 @@ public class PlannerPage {
     public PlannerPage addEntries(int count) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         for (int i = 1; i <= count; i++) {
+            WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
 
-            driver.findElement(entryInput).sendKeys("Test recording" + i);
-            driver.findElement(addButton).click();
+            input.sendKeys("Test recording " + i);
+
+            WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(addButton));
+            js.executeScript("arguments[0].click();", button);
 
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
         }
