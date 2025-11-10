@@ -12,7 +12,7 @@ public class PlannerPage {
 
     private final WebDriver driver;
     private final By entryInput = By.cssSelector("#__layout textarea");
-    private final By addButton = By.cssSelector("#__layout .page__content button");
+    private final By addButton = By.cssSelector(".pageCreate__content > button");
     private final By bucket = By.cssSelector("#__layout > div > div:nth-child(1) button:nth-child(2)");
     private final By entriesContainer = By.cssSelector("#__layout .vb-content");
     private final By firstEntry = By.cssSelector("#__layout > div > div:nth-child(1)");
