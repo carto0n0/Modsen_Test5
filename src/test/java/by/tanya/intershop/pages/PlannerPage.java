@@ -40,13 +40,13 @@ public class PlannerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         for (int i = 1; i <= count; i++) {
             WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", input);
+            //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", input);
 
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", input);
             input.sendKeys("Test recording " + i);
 
-            WebElement button = wait.until(ExpectedConditions.elementToBeClickable(addButton));
-            button.click();
+            WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(addButton));
+            wait.until(ExpectedConditions.elementToBeClickable(button)).click();
 
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
         }
