@@ -14,13 +14,27 @@ public class DriverFactory {
         String isCI = System.getenv("CI");
 
         if ("true".equals(isCI)) {
-            String userDataDir = Files.createTempDirectory("chrome-profile-").toString();
-            options.addArguments("--headless=new");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--disable-gpu");
-            options.addArguments("--remote-allow-origins=*");
-            options.addArguments("--user-data-dir=" + userDataDir);
+            String userDataDir = Files.createTempDirectory(
+                    "chrome-profile-").toString();
+            options.addArguments(
+                    "--headless=new",
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                    "--remote-allow-origins=*",
+                    "--user-data-dir=" + userDataDir,
+                    "--window-size=1920,1080",
+                    "--disable-extensions",
+                    "--disable-popup-blocking",
+                    "--disable-notifications",
+                    "--disable-infobars",
+                    "--disable-web-security",
+                    "--disable-features=VizDisplayCompositor",
+                    "--disable-background-timer-throttling",
+                    "--disable-backgrounding-occluded-windows",
+                    "--disable-renderer-backgrounding",
+                    "--disable-component-extensions-with-background-pages"
+            );
         }
 
 
