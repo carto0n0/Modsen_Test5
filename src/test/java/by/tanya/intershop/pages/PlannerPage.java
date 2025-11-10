@@ -42,7 +42,7 @@ public class PlannerPage {
             WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", input);
 
-            input.click();
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", input);
             input.sendKeys("Test recording " + i);
 
             WebElement button = wait.until(ExpectedConditions.elementToBeClickable(addButton));
