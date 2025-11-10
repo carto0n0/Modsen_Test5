@@ -54,10 +54,23 @@ public class PlannerPage {
         for (int i = 1; i <= count; i++) {
             WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
 
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", input);
             input.sendKeys("Test recording " + i);
 
-            WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(addButton));
-            js.executeScript("arguments[0].click();", button);
+            WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(addButton));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
+
+            wait.until(ExpectedConditions.elementToBeClickable(button)).click();
+
+//          WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
+//
+//            input.sendKeys("Test recording " + i);
+//
+//            WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(addButton));
+//            js.executeScript("arguments[0].click();", button);
+//
+//            wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
+
 
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
         }
