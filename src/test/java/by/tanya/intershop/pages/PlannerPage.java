@@ -43,20 +43,19 @@ public class PlannerPage {
             js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", element);
 
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
 
-            wait.until(ExpectedConditions.visibilityOf(element));
-            wait.until(driver -> element.isEnabled());
+            WebElement clickableElement = wait.until(ExpectedConditions.elementToBeClickable(locator));
 
             try {
-                wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+                clickableElement.click();
             } catch (ElementClickInterceptedException e) {
-                js.executeScript("arguments[0].click();", element);
+                js.executeScript("arguments[0].click();", clickableElement);
             } catch (ElementNotInteractableException e) {
-                js.executeScript("arguments[0].click();", element);
+                js.executeScript("arguments[0].click();", clickableElement);
             }
 
         } catch (TimeoutException e) {
@@ -106,16 +105,34 @@ public class PlannerPage {
                 );
             }
 
-            WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(addButton));
-            js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", button);
+            wait.until(driver -> {
+                try {
+                    WebElement button = driver.findElement(addButton);
+                    if (!button.isDisplayed() || !button.isEnabled()) {
+                        return false;
+                    }
+                    String pointerEvents = button.getCssValue("pointer-events");
+                    if ("none".equals(pointerEvents)) {
+                        return false;
+                    }
+                    String disabled = button.getAttribute("disabled");
+                    if (disabled != null && ("true".equals(disabled) || disabled.isEmpty())) {
+                        return false;
+                    }
+                    Object result = js.executeScript(
+                            "var rect = arguments[0].getBoundingClientRect();" +
+                                    "return rect.width > 0 && rect.height > 0 && " +
+                                    "rect.top < (window.innerHeight || document.documentElement.clientHeight) && " +
+                                    "rect.left < (window.innerWidth || document.documentElement.clientWidth) && " +
+                                    "rect.bottom > 0 && rect.right > 0;",
+                            button
+                    );
+                    return result instanceof Boolean && (Boolean) result;
+                } catch (Exception e) {
+                    return false;
+                }
+            });
 
-            try {
-                Thread.sleep(400);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-
-            wait.until(ExpectedConditions.visibilityOf(button));
             safeClick(addButton);
 
             wait.until(driver -> driver.findElements(entries).size() >= currentIndex);
