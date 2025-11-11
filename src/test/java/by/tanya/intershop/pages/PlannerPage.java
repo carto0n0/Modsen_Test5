@@ -87,14 +87,23 @@ public class PlannerPage {
             js.executeScript("arguments[0].focus();", input);
 
             try {
-                input.clear();
                 input.sendKeys("Test recording " + i);
             } catch (ElementNotInteractableException e) {
                 js.executeScript(
-                        "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
+                        "arguments[0].value = arguments[1];" +
+                                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                        input, "Test recording " + i
+                );
+            } catch (InvalidElementStateException  e) {
+                js.executeScript(
+                        "arguments[0].value = arguments[1];" +
+                                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
                         input, "Test recording " + i
                 );
             }
+            
             wait.until(ExpectedConditions.elementToBeClickable(addButton));
             safeClick(addButton);
 
