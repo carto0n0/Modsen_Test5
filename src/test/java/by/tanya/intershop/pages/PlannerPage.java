@@ -5,6 +5,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 
@@ -37,21 +41,24 @@ public class PlannerPage {
 
     private PlannerPage safeClick(By locator) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-
-        wait.until(ExpectedConditions.visibilityOf(element));
-        wait.until(ExpectedConditions.elementToBeClickable(element));
-
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
 
         try {
-            element.click();
-        } catch (ElementClickInterceptedException e) {
-            js.executeScript("arguments[0].click();", element);
-        } catch (ElementNotInteractableException e) {
-            js.executeScript("arguments[0].click();", element);
-        }
+            WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 
+            js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", element);
+            js.executeScript("arguments[0].style.display='block'; arguments[0].style.visibility='visible';", element);
+
+            try {
+                wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+            } catch (ElementClickInterceptedException e) {
+                js.executeScript("arguments[0].click();", element);
+            } catch (ElementNotInteractableException e) {
+                js.executeScript("arguments[0].click();", element);
+            }
+
+        } catch (TimeoutException e) {
+            throw new TimeoutException("Element " + locator + " not found");
+        }
         return this;
     }
 
