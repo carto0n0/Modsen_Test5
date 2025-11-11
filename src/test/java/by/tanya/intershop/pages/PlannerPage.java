@@ -89,6 +89,11 @@ public class PlannerPage {
 
             try {
                 input.sendKeys("Test recording " + i);
+                js.executeScript(
+                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                        input
+                );
             } catch (ElementNotInteractableException e) {
                 js.executeScript(
                         "arguments[0].value = arguments[1];" +
@@ -108,30 +113,23 @@ public class PlannerPage {
             wait.until(driver -> {
                 try {
                     WebElement button = driver.findElement(addButton);
-                    if (!button.isDisplayed() || !button.isEnabled()) {
-                        return false;
-                    }
-                    String pointerEvents = button.getCssValue("pointer-events");
-                    if ("none".equals(pointerEvents)) {
-                        return false;
-                    }
                     String disabled = button.getAttribute("disabled");
-                    if (disabled != null && ("true".equals(disabled) || disabled.isEmpty())) {
-                        return false;
-                    }
-                    Object result = js.executeScript(
-                            "var rect = arguments[0].getBoundingClientRect();" +
-                                    "return rect.width > 0 && rect.height > 0 && " +
-                                    "rect.top < (window.innerHeight || document.documentElement.clientHeight) && " +
-                                    "rect.left < (window.innerWidth || document.documentElement.clientWidth) && " +
-                                    "rect.bottom > 0 && rect.right > 0;",
-                            button
-                    );
-                    return result instanceof Boolean && (Boolean) result;
+                    return button.isEnabled() && (disabled == null || disabled.equals("false"));
                 } catch (Exception e) {
                     return false;
                 }
             });
+
+            WebElement button = driver.findElement(addButton);
+            js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", button);
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            wait.until(ExpectedConditions.elementToBeClickable(addButton));
 
             safeClick(addButton);
 
