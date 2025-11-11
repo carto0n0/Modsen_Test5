@@ -1,4 +1,3 @@
-@Epic("intershop")
 Feature: Go to the Watches section
 
   Background: Main page of the intershop website is open

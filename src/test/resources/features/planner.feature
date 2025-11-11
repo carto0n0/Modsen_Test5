@@ -1,4 +1,3 @@
-@Epic("planner")
 Feature: Adding and deleting record
 
   Background: Open the planner

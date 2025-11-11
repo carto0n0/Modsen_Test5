@@ -10,29 +10,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 
-public class NavigationPage {
-
-    private final WebDriver driver;
-    private final WebDriverWait wait;
-
+public class NavigationPage extends SharedPage {
 
     public NavigationPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        super(driver);
     }
 
     public NavigationPage hoverOverDirectory(Actions actions) {
-        WebElement directory = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(
-                        By.cssSelector("#menu-item-46 > a")));
+        WebElement directory = waitForVisibility(By.cssSelector("#menu-item-46 > a"));
         actions.moveToElement(directory).pause(Duration.ofMillis(500)).perform();
         return this;
     }
 
     public NavigationPage hoverOverElectronics(Actions actions) {
-        WebElement electronics = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(
-                        By.cssSelector("#menu-item-47 > a")));
+        WebElement electronics = waitForVisibility(By.cssSelector("#menu-item-47 > a"));
         actions.moveToElement(electronics).pause(Duration.ofMillis(500)).perform();
         return this;
     }

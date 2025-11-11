@@ -3,13 +3,12 @@ package by.tanya.intershop.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class SectionPage {
+public class SectionPage extends SharedPage {
 
-    private final WebDriver driver;
     private final By titleSection = By.cssSelector("#title_bread_wrap h1");
 
     public SectionPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public String getTitle() {

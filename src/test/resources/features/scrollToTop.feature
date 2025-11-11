@@ -1,4 +1,3 @@
-@Epic("intershop")
 Feature: Scroll to top of page
 
   Background: Main page of the intershop website is open

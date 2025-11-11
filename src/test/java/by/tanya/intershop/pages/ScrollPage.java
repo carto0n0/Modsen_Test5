@@ -6,44 +6,30 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class ScrollPage {
-
-    private final WebDriver driver;
+public class ScrollPage extends SharedPage {
 
     private final By arrowTop = By.cssSelector("#ak-top");
 
     public ScrollPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public ScrollPage scrollDown() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        scrollToBottom();
         return this;
     }
 
     public boolean isArrowVisible() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
-        WebElement arrow = wait.until(ExpectedConditions.visibilityOfElementLocated(arrowTop));
+        WebElement arrow = waitForVisibility(arrowTop);
         return arrow.isDisplayed();
     }
 
     public ScrollPage clickOnArrow() {
-        driver.findElement(arrowTop).click();
+        safeClick(arrowTop);
         return this;
     }
 
     public boolean isTop() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-
-        try {
-            return wait.until(webDriver -> {
-                Number pagePosition = (Number) js.executeScript("return window.scrollY;");
-                return pagePosition.intValue() <= 5;
-            });
-        } catch (TimeoutException e) {
-            return false;
-        }
+        return isAtTop();
     }
 }

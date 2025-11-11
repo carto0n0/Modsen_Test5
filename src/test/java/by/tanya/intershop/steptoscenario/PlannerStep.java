@@ -8,10 +8,6 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlannerStep {
@@ -33,7 +29,7 @@ public class PlannerStep {
 
     @And("scroll down")
     public void ScrollBottom() {
-        plannerPage.scrollToBottom();
+        plannerPage.scrollToDown();
     }
 
     @Then("check the original records")

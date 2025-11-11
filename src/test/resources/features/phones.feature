@@ -1,4 +1,3 @@
-@Epic("intershop")
 Feature: Go to the Phones section
 
   Background: Main page of the intershop website is open
