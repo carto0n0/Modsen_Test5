@@ -46,7 +46,8 @@ public class PlannerPage {
             WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 
             js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", element);
-            js.executeScript("arguments[0].style.display='block'; arguments[0].style.visibility='visible';", element);
+
+            wait.until(driver -> element.isEnabled());
 
             try {
                 wait.until(ExpectedConditions.elementToBeClickable(element)).click();
@@ -94,6 +95,7 @@ public class PlannerPage {
                         input, "Test recording " + i
                 );
             }
+            wait.until(ExpectedConditions.elementToBeClickable(addButton));
             safeClick(addButton);
 
             wait.until(driver -> driver.findElements(entries).size() >= currentIndex);
