@@ -22,12 +22,6 @@ public class PlannerStep {
 
     @When("Add 10 new entries")
     public void addEntriesToPlanner() {
-        String pageSource = driver.getPageSource();
-        try {
-            Files.writeString(Paths.get("/tmp/page_dom.html"), pageSource);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         plannerPage.rememberOriginalEntries()
                 .addEntries(10);
     }

@@ -11,12 +11,11 @@ import java.util.List;
 public class PlannerPage {
 
     private final WebDriver driver;
-    private final By entryInput = By.cssSelector("#__layout textarea");
-    private final By addButton = By.cssSelector(".pageCreate__content > button");
-    private final By bucket = By.cssSelector("#__layout > div > div:nth-child(1) button:nth-child(2)");
-    private final By entriesContainer = By.cssSelector("#__layout .vb-content");
-    private final By firstEntry = By.cssSelector("#__layout > div > div:nth-child(1)");
-    private final By entries = By.cssSelector("#__layout .vb-content > div");
+    private final By entryInput = By.cssSelector(".baseTextarea__text");
+    private final By addButton = By.cssSelector(".pageCreate__baseButton");
+    private final By bucket = By.cssSelector(".articlePreview:first-child .articlePreview__buttons .articlePreview__button:nth-child(2)");
+    private final By entriesContainer = By.cssSelector(".vb-content");
+    private final By entries = By.cssSelector(".vb-content .articlePreview");
     private List<String> originalEntriesTexts;
     private final JavascriptExecutor js;
 
@@ -40,9 +39,8 @@ public class PlannerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 
-        wait.until(webDriver -> ((JavascriptExecutor) webDriver)
-                .executeScript("return arguments[0].offsetParent !== null", element)
-                .equals(true));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
 
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
 
@@ -61,10 +59,19 @@ public class PlannerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
         for (int i = 1; i <= count; i++) {
-            safeClick(entryInput);
-            WebElement input = driver.findElement(entryInput);
-            input.sendKeys("Test recording " + i);
+            WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(entryInput));
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", input);
+            js.executeScript("arguments[0].focus();", input);
 
+            try {
+                input.clear();
+                input.sendKeys("Test recording " + i);
+            } catch (ElementNotInteractableException e) {
+                js.executeScript(
+                        "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
+                        input, "Test recording " + i
+                );
+            }
             safeClick(addButton);
 
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
@@ -73,17 +80,27 @@ public class PlannerPage {
     }
 
     public PlannerPage deleteTopEntry(Actions actions) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement firstContainer = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(firstEntry));
+        List<WebElement> beforeDelete = wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, 0));
+        WebElement firstContainer = beforeDelete.get(0);
 
-        actions.moveToElement(firstContainer).perform();
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", firstContainer);
 
-        WebElement bucketButton = wait.until(ExpectedConditions.presenceOfElementLocated(bucket));
+        actions.moveToElement(firstContainer).pause(Duration.ofMillis(300)).perform();
 
+        WebElement bucketButton = wait.until(ExpectedConditions.elementToBeClickable(bucket));
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", bucketButton);
         js.executeScript("arguments[0].click();", bucketButton);
 
+        try {
+            wait.until(ExpectedConditions.invisibilityOf(firstContainer));
+        } catch (TimeoutException e) {
+            wait.until(driver -> {
+                List<WebElement> after = driver.findElements(entries);
+                return after.isEmpty() || !after.get(0).equals(firstContainer);
+            });
+        }
         return this;
     }
 
