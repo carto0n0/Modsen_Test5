@@ -4,11 +4,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 
@@ -47,6 +42,13 @@ public class PlannerPage {
 
             js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", element);
 
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            wait.until(ExpectedConditions.visibilityOf(element));
             wait.until(driver -> element.isEnabled());
 
             try {
@@ -103,8 +105,17 @@ public class PlannerPage {
                         input, "Test recording " + i
                 );
             }
-            
-            wait.until(ExpectedConditions.elementToBeClickable(addButton));
+
+            WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(addButton));
+            js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", button);
+
+            try {
+                Thread.sleep(400);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            wait.until(ExpectedConditions.visibilityOf(button));
             safeClick(addButton);
 
             wait.until(driver -> driver.findElements(entries).size() >= currentIndex);
