@@ -37,25 +37,32 @@ public class PlannerPage {
     }
 
     private PlannerPage safeClick(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+
+        wait.until(webDriver -> ((JavascriptExecutor) webDriver)
+                .executeScript("return arguments[0].offsetParent !== null", element)
+                .equals(true));
+
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
 
         try {
             element.click();
         } catch (ElementClickInterceptedException e) {
             js.executeScript("arguments[0].click();", element);
+        } catch (ElementNotInteractableException e) {
+            js.executeScript("arguments[0].click();", element);
         }
+
         return this;
     }
 
     public PlannerPage addEntries(int count) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        for (int i = 1; i <= count; i++) {
-            WebElement input = wait.until(ExpectedConditions.elementToBeClickable(entryInput));
 
-            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", input);
-            input.click();
+        for (int i = 1; i <= count; i++) {
+            safeClick(entryInput);
+            WebElement input = driver.findElement(entryInput);
             input.sendKeys("Test recording " + i);
 
             safeClick(addButton);

@@ -35,6 +35,14 @@ jobs:
         run: |
           mvn clean test
 
+      - name: Upload DOM and screenshot
+        uses: actions/upload-artifact@v3
+        with:
+          name: page-debug
+          path: |
+            /tmp/page_dom.html
+            target/screenshots/    
+
       - name: Generate Allure report
         run: |
           allure generate target/allure-results -o allure-report --clean
