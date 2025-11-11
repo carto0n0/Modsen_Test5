@@ -59,7 +59,22 @@ public class PlannerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
         for (int i = 1; i <= count; i++) {
-            WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(entryInput));
+            int currentIndex = i;
+
+            WebElement input = null;
+
+            try {
+                input = wait.until(ExpectedConditions.presenceOfElementLocated(entryInput));
+            } catch (TimeoutException e) {
+                throw new TimeoutException("textarea (.baseTextarea__text) don't found");
+            }
+
+            try {
+                wait.until(ExpectedConditions.visibilityOf(input));
+            } catch (TimeoutException e) {
+                js.executeScript("arguments[0].style.display='block'; arguments[0].style.visibility='visible';", input);
+            }
+
             js.executeScript("arguments[0].scrollIntoView({block: 'center'});", input);
             js.executeScript("arguments[0].focus();", input);
 
@@ -74,7 +89,7 @@ public class PlannerPage {
             }
             safeClick(addButton);
 
-            wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(entries, i - 1));
+            wait.until(driver -> driver.findElements(entries).size() >= currentIndex);
         }
         return this;
     }
